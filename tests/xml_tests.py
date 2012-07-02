@@ -59,7 +59,7 @@ class XMLParsingTestCase(unittest.TestCase):
         assert float(locDict['precip']) >= 0.0
 
     def test_location_url(self):
-        xmlparsing.location_url(redis.devel, locName='Squamish')
+        xmlparsing.location_url(redis.db, locName='Squamish')
 
 if __name__ == '__main__':
     unittest.main()

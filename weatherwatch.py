@@ -1,11 +1,14 @@
 from flask import Flask, flash, g, make_response, redirect, render_template, \
      request, url_for
 from redis import Redis
+import dbutil
+import present
 import redisinstance as redis
 
 # configuration
-DEBUG = True
-SECRET_KEY = 'development key'
+if __debug__:
+    DEBUG = True
+SECRET_KEY = '\x15SPi\xfd\x15\x01\x15\xf8\xc4\xa5\xe8\xe8\xf8!\x87\x99c\x98\x9e\x97\xa7u5'
 
 app = Flask(__name__)
 app.config.from_object(__name__)
@@ -13,7 +16,7 @@ app.config.from_object(__name__)
 @app.before_request
 def before_request():
     print 'before'
-    redis.devel.incr('visits')
+    redis.db.incr('visits')
 
 @app.after_request
 def after_request(response):
@@ -22,14 +25,26 @@ def after_request(response):
 
 @app.route('/')
 def index():
-    location = request.cookies.get('location')
-    response = make_response(render_template('index.html'))
-    response.set_cookie('location', 'here')
+    prevLoc = request.cookies.get('location')
+    locations = dbutil.all_locations()
+    response = make_response(render_template('index.html',
+            locations=locations, default=None))
     return response
 
-@app.route('/recap/', methods=['POST'])
+@app.route('/recap/')
 def recap():
-    flash(request.form['location'])
+    location = request.args.get('location')
+    if location is not None:
+        prev = dbutil.previous_days(location)
+        prevStr = present.format_previous(prev)
+        flash(prevStr)
+
+    locations = dbutil.all_locations()
+    response = make_response(render_template('index.html',
+            locations=locations, default=location))
+    response.set_cookie('location', 'here')
+    #TODO don't redirect
+    return response
     return redirect(url_for('index'))
 
 @app.route('/<int:longitude>/<int:latitude>/')
@@ -49,8 +64,6 @@ def locations_in_region(region):
     return locations
 
 if __name__ == '__main__':
-    with app.test_request_context():
-        print url_for('precipitation', longitude=20, latitude=20)
     if DEBUG:
         app.run(debug=True)
     else:

@@ -120,7 +120,9 @@ def update_records(redis, localFile=None):
 
 
 def main():
-    usage = 'usage: %s LIVE|devel' % (sys.argv[0])
+    usage = 'usage: python %s LIVE|devel' % (sys.argv[0])
+    usage += "\n> note: python must be run with the '-O' switch to use the "
+    usage += 'live database'
 
     if len(sys.argv) < 2:
         print usage
@@ -128,10 +130,10 @@ def main():
 
     db = sys.argv[1]
 
-    if db == 'LIVE':
+    if db == 'LIVE' and not __debug__:
         update_records(redis.live)
-    elif db == 'devel':
-        update_records(redis.devel)
+    elif db == 'db' and __debug__:
+        update_records(redis.db)
     else:
         print usage
 

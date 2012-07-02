@@ -1,13 +1,17 @@
 {% extends 'layout.html' %}
 {% block body %}
-<form action="{{ url_for('recap') }}" method=post>
+<form action="{{ url_for('recap') }}" method=get>
     <fieldset>
         <legend>Get 2-day recap for a location</legend>
         <label for="location">Location</label>
         <select name="location">
-            <option value="1">Squamish</option>
-            <option value="2">Cranbrook</option>
-            <option value="3">Vancouver</option>
+        {% for loc in locations %}
+        {% if default == loc %}
+            <option selected="selected">{{ loc.decode('utf-8') }}</option>
+        {% else %}
+            <option>{{ loc.decode('utf-8') }}</option>
+        {% endif %}
+        {% endfor %}
         </select>
         <input type="submit" value="Submit" />
     </fieldset>
