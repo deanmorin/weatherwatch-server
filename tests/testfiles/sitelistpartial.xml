@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<siteList>
+	<site code="s0000001">
+		<nameEn>Athabasca</nameEn>
+		<nameFr>Athabasca</nameFr>
+		<provinceCode>AB</provinceCode>
+	</site>
+	<site code="s0000256">
+		<nameEn>Deerwood</nameEn>
+		<nameFr>Deerwood</nameFr>
+		<provinceCode>MB</provinceCode>
+	</site>
+	<site code="s0000486">
+		<nameEn>Bagotville</nameEn>
+		<nameFr>Bagotville</nameFr>
+		<provinceCode>QC</provinceCode>
+	</site>
+	<site code="s0000763">
+		<nameEn>Lake Superior (Provincial Park)</nameEn>
+		<nameFr>Lac Supérieur (Parc provincial)</nameFr>
+		<provinceCode>ON</provinceCode>
+	</site>
+	<site code="s0000767">
+		<nameEn>Okotoks</nameEn>
+		<nameFr>Okotoks</nameFr>
+		<provinceCode>AB</provinceCode>
+	</site>
+	<site code="s0000785">
+		<nameEn>Toronto Island</nameEn>
+		<nameFr>Toronto Island</nameFr>
+		<provinceCode>ON</provinceCode>
+	</site>
+	<site code="s0000810">
+		<nameEn>Pointe-à-la-Croix</nameEn>
+		<nameFr>Pointe-à-la-Croix</nameFr>
+		<provinceCode>QC</provinceCode>
+	</site>
+	<site code="s0000857">
+		<nameEn>L'Anse-au-Loup</nameEn>
+		<nameFr>L'Anse-au-Loup</nameFr>
+		<provinceCode>NL</provinceCode>
+	</site>
+	<site code="s0000853">
+		<nameEn>Okanagan Connector - Merritt to Kelowna</nameEn>
+		<nameFr>Route de liason de l'Okanagan - De Merritt à Kelowna</nameFr>
+		<provinceCode>HEF</provinceCode>
+	</site>
+	<site code="s0000854">
+		<nameEn>Sea to Sky - Squamish To Whistler</nameEn>
+		<nameFr>Sea to Sky - De Squamish à Whistler</nameFr>
+		<provinceCode>HEF</provinceCode>
+	</site>
+	<site code="s0000855">
+		<nameEn>Sea to Sky - West Vancouver Upper Levels to Squamish</nameEn>
+		<nameFr>Sea to Sky - Des hauteurs de Vancouver Ouest à Squamish</nameFr>
+		<provinceCode>HEF</provinceCode>
+	</site>
+</siteList>

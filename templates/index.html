@@ -1,0 +1,27 @@
+{% extends 'layout.html' %}
+{% block body %}
+<form action="{{ url_for('recap') }}" method=post>
+    <fieldset>
+        <legend>Get 2-day recap for a location</legend>
+        <label for="location">Location</label>
+        <select name="location">
+            <option value="1">Squamish</option>
+            <option value="2">Cranbrook</option>
+            <option value="3">Vancouver</option>
+        </select>
+        <input type="submit" value="Submit" />
+    </fieldset>
+</form>
+<form action="{{ url_for('locations') }}" method=post>
+    <fieldset>
+        <legend>Get locations in a region</legend>
+        <label for="region">Region</label>
+        <select name="region">
+            <option value="howe">Howe Sound</option>
+            <option value="howe">Cranbrook</option>
+            <option value="howe">Vancouver</option>
+        </select>
+        <input type="submit" value="Submit" />
+    </fieldset>
+</form>
+{% endblock %}
