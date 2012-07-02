@@ -26,7 +26,6 @@ class XMLParsingTestCase(unittest.TestCase):
         assert 'Toronto Island' in locations
         assert locations['Toronto Island'][0] == 'ON'
         assert locations['Toronto Island'][1] == 's0000785'
-
         
     def test_db_add_locations(self):
         locations = xmlparsing.location_urls('testfiles/sitelist.xml')
@@ -52,7 +51,7 @@ class XMLParsingTestCase(unittest.TestCase):
                                   localFile='testfiles/sitelistpartial.xml')
         xmlparsing.update_records(redis.test,
                                   localFile='testfiles/sitelistpartial.xml')
-        # previous day info should only be inserted once 
+        # previous day info should only be inserted once per day
         print redis.test.llen('loc:Athabasca:prev_days')
         assert redis.test.llen('loc:Athabasca:prev_days') == 1
         location = redis.test.lpop('loc:Athabasca:prev_days')
