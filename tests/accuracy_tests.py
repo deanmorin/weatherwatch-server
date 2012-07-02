@@ -31,7 +31,7 @@ class AccuracyTestCase(unittest.TestCase):
 
     def test_forecasts(self):
         url = xmlparsing.location_url(redis=redis.db, locName='Victoria')
-        xml = xmlparsing.xml_from_url(url, 'latin_1')
+        xml = xmlparsing.xml_from_url(url)
         date, forecasts = accuracy.forecasts(xml, 7)
         assert date is not None and forecasts is not None
         # maximum allowed is 5 days

@@ -7,9 +7,9 @@
         <select name="location">
         {% for loc in locations %}
         {% if default == loc %}
-            <option selected="selected">{{ loc.decode('utf-8') }}</option>
+            <option selected="selected">{{ loc }}</option>
         {% else %}
-            <option>{{ loc.decode('utf-8') }}</option>
+            <option>{{ loc }}</option>
         {% endif %}
         {% endfor %}
         </select>

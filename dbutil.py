@@ -7,7 +7,7 @@ def all_locations():
     locations = siteCodes.keys()
 
     locale.setlocale(locale.LC_ALL, "")
-    locations.sort(cmp=locale.strcoll, key=str.lower) 
+    locations.sort(cmp=locale.strcoll) 
 
     return locations
 
