@@ -1,3 +1,4 @@
+import sys
 from lxml import etree
 import redisinstance as redis
 import xmlparsing as xp
@@ -73,13 +74,45 @@ def forecasts(xml, numDays):
     return None, None
 
 
-def temp():
+def main():
+    usage = 'usage: python %s LIVE|devel' % (sys.argv[0])
+    usage += "\n> note: python must be run with the '-O' switch to use the "
+    usage += 'live database'
+
+    if len(sys.argv) < 2:
+        print usage
+        exit()
+
+    db = sys.argv[1]
+
+    if (db == 'LIVE' and not __debug__) or (db == 'devel' and __debug__):
+        r=redis.db
+    else:
+        print usage
+        exit()
+
     locations = [ 'Squamish', 'Vancouver', 'Penticton', 'Banff' ]
 
     for loc in locations:
-        url = location_url(redis=redis.test, locName=loc)
-        xml = xp.xml_from_url(url, 'latin_1')
+        url = xp.location_url(redis=r, locName=loc)
+        xml = xp.xml_from_url(url)
 
-        date, forcasts = forecasts(xml, 5)
+        date, fcast = forecasts(xml, 5)
 
-        #redis.devel.
+        if date is None or fcast is None:
+            continue
+
+        key = 'forecast:' + loc
+        val = (date, fcast)
+
+        lastRecord = r.lrange(key, 0, 0)
+
+        if (lastRecord is not None and len(lastRecord) == 1 
+                and lastRecord[0][0] == date):
+            continue
+
+        r.lpush(key, val)
+
+
+if __name__ == '__main__':
+    main()

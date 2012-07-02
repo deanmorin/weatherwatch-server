@@ -40,16 +40,11 @@ def recap():
     response.set_cookie('location', 'here')
     return response
 
-@app.route('/locations/', methods=['POST'])
-def locations():
-    flash(locations_in_region(None))
+@app.route('/previous_forecasts/')
+def previous_forecasts():
+    location = request.args.get('fcast_location')
+    #flash(locations_in_region(None))
     return redirect(url_for('index'))
-
-def locations_in_region(region):
-    locations = []
-    locations.append('Tofino')
-    locations.append('Cranbrook')
-    return locations
 
 if __name__ == '__main__':
     if DEBUG:

@@ -16,3 +16,9 @@ def previous_days(location):
     key = 'loc:' + location + ':prev_days'
     prev = redis.db.lrange(key, 0, 1)
     return prev
+
+
+def old_forecasts(location):
+    key = 'forecast:' + location
+    fcast = redis.db.lrange(key, 0, 4)
+    return fcast

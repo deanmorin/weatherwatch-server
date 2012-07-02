@@ -91,8 +91,8 @@ def insert_yesterday(redis, location, yesterday):
     key = 'loc:' + location + ':prev_days'
     lastRecord = redis.lrange(key, 0, 0)
 
-    if len(lastRecord) == 1:
-        lastRecordDict = ast.literal_eval(redis.lrange(key, 0, 0)[0])
+    if lastRecord is not None and len(lastRecord) == 1:
+        lastRecordDict = ast.literal_eval(lastRecord[0])
 
         if lastRecordDict['date_retrieved'] == yesterday['date_retrieved']:
             newRecord = False
@@ -131,9 +131,7 @@ def main():
 
     db = sys.argv[1]
 
-    if db == 'LIVE' and not __debug__:
-        update_records(redis.live)
-    elif db == 'devel' and __debug__:
+    if (db == 'LIVE' and not __debug__) or (db == 'devel' and __debug__):
         update_records(redis.db)
     else:
         print usage

@@ -1,5 +1,6 @@
 {% extends 'layout.html' %}
 {% block body %}
+
 <form action="{{ url_for('recap') }}" method=get>
     <fieldset>
         <legend>Get 2-day recap for a location</legend>
@@ -13,19 +14,21 @@
         {% endif %}
         {% endfor %}
         </select>
-        <input type="submit" value="Submit" />
+        <div class="submit"><input type="submit" value="Submit" /></div>
     </fieldset>
 </form>
-<form action="{{ url_for('locations') }}" method=post>
+
+<form action="{{ url_for('previous_forecasts') }}" method=get>
     <fieldset>
-        <legend>Get locations in a region</legend>
-        <label for="region">Region</label>
-        <select name="region">
-            <option value="howe">Howe Sound</option>
-            <option value="howe">Cranbrook</option>
-            <option value="howe">Vancouver</option>
+        <legend>See previous forecasts</legend>
+        <label for="fcast_location">Location</label>
+        <select name="fcast_location">
+        {% for loc in fcastLocations %}
+            <option>{{ loc }}</option>
+        {% endfor %}
         </select>
-        <input type="submit" value="Submit" />
+        <div class="submit"><input type="submit" value="Submit" /></div>
     </fieldset>
 </form>
+
 {% endblock %}
