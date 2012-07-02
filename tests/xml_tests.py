@@ -1,15 +1,12 @@
 # -*- coding: utf-8 -*-
 import ast
 import logging
-import os
 import sys
-import tempfile
 import unittest
 sys.path.insert(0, '../')
 import redisinstance as redis
 import xmlparsing
 
-import time
 class XMLParsingTestCase(unittest.TestCase):
 
     def setUp(self):
@@ -60,6 +57,9 @@ class XMLParsingTestCase(unittest.TestCase):
         assert float(locDict['high']) < 45.0
         assert float(locDict['low']) > -68.0
         assert float(locDict['precip']) >= 0.0
+
+    def test_location_url(self):
+        xmlparsing.location_url(redis.devel, locName='Squamish')
 
 if __name__ == '__main__':
     unittest.main()

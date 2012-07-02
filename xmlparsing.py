@@ -16,6 +16,15 @@ def xml_from_url(url, encoding):
     return xml
 
 
+def location_url(redis=None, locName=None, urlInfo=None):
+    if urlInfo is None and redis is not None and locName is not None:
+        siteCodes = ast.literal_eval(redis.get('site_codes'))
+        urlInfo = siteCodes[locName]
+
+    url = FORECAST_URL + '/' + str(urlInfo[0]) + '/' + str(urlInfo[1]) + '_e.xml'
+    return url
+
+
 def yesterday_conditions(xml):
     yesterday = {}
     context = etree.iterparse(xml, events=('start',))
@@ -33,7 +42,7 @@ def yesterday_conditions(xml):
             if any(text is None for text in (year, month, day)):
                 return None
 
-            yesterday['date_retrieved'] = year.encode('utf-8') + '-' + month.encode('utf-8') + '-' + day.encode('utf-8')
+            yesterday['date_retrieved'] = year + '-' + month + '-' + day
 
         elif element.tag == 'yesterdayConditions':
             for child in element:
@@ -101,7 +110,7 @@ def update_records(redis, localFile=None):
     db_add_locations(redis, locations)
 
     for loc, urlInfo in locations.items():
-        url = FORECAST_URL + '/' + str(urlInfo[0]) + '/' + str(urlInfo[1]) + '_e.xml'
+        url = location_url(urlInfo=urlInfo)
         xml = xml_from_url(url, 'latin_1')
         yesterday = yesterday_conditions(xml)
 
@@ -111,7 +120,7 @@ def update_records(redis, localFile=None):
 
 
 def main():
-    usage = 'usage: %s <LIVE|devel>' % (sys.argv[0])
+    usage = 'usage: %s LIVE|devel' % (sys.argv[0])
 
     if len(sys.argv) < 2:
         print usage
