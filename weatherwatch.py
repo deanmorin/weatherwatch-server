@@ -13,14 +13,9 @@ SECRET_KEY = '\x15SPi\xfd\x15\x01\x15\xf8\xc4\xa5\xe8\xe8\xf8!\x87\x99c\x98\x9e\
 app = Flask(__name__)
 app.config.from_object(__name__)
 
-@app.before_request
-def before_request():
-    print 'before'
-    redis.db.incr('visits')
-
 @app.after_request
 def after_request(response):
-    print 'after'
+    redis.db.incr('requests')
     return response
 
 @app.route('/')
@@ -43,14 +38,7 @@ def recap():
     response = make_response(render_template('index.html',
             locations=locations, default=location))
     response.set_cookie('location', 'here')
-    #TODO don't redirect
     return response
-    return redirect(url_for('index'))
-
-@app.route('/<int:longitude>/<int:latitude>/')
-def precipitation(longitude, latitude):
-    precip = 33
-    return '%dmm' % precip
 
 @app.route('/locations/', methods=['POST'])
 def locations():

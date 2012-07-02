@@ -10,11 +10,9 @@ class WeatherWatchTestCase(unittest.TestCase):
     def setUp(self):
         ww.app.config['TESTING'] = True
         self.app = ww.app.test_client()
-        #print 'su'
 
     def tearDown(self):
         pass
-        #print 'td'
 
     def test_empty_db(self):
         rv = self.app.get('/', follow_redirects=True)

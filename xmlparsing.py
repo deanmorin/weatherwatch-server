@@ -133,7 +133,7 @@ def main():
 
     if db == 'LIVE' and not __debug__:
         update_records(redis.live)
-    elif db == 'db' and __debug__:
+    elif db == 'devel' and __debug__:
         update_records(redis.db)
     else:
         print usage
