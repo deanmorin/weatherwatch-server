@@ -35,9 +35,9 @@ class XMLParsingTestCase(unittest.TestCase):
         # a failure here may just indicate that the codes have changed
         assert codes == f.read()
         codesDict = ast.literal_eval(codes)
-        loc = 'Rivière-du-Loup'
+        loc = u'Rivière-du-Loup'
         assert codesDict[loc] == ('QC', 's0000253')
-        loc = 'Îles-de-la-Madeleine'
+        loc = u'Îles-de-la-Madeleine'
         assert codesDict[loc] == ('QC', 's0000174')
 
     def test_yesterday_conditions(self):
