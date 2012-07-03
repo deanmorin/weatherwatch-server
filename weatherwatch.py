@@ -15,8 +15,10 @@ app.config.from_object(__name__)
 
 @app.after_request
 def after_request(response):
+    """Count the total number of requests."""
     redis.db.incr('requests')
     return response
+
 
 @app.route('/')
 def index():

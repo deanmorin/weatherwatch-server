@@ -14,7 +14,7 @@ def provide_dropdowns(recapDefault=None, fcastDefault=None):
 def format_previous(prev):
     prevStr = ''
 
-    if len(prev) == 0:
+    if prev is not None and len(prev) == 0:
         prevStr += 'No data available for this location'
 
     i = 1
@@ -39,7 +39,7 @@ def format_previous(prev):
 def format_forecasts(fcasts):
     fcastStr = ''
 
-    if len(fcasts) == 0:
+    if fcasts in not None and len(fcasts) == 0:
         prevStr += 'No forecasts available for this location'
 
     # TODO: provide a better interface for viewing forecasts; currently only
