@@ -18,11 +18,14 @@ def provide_dropdowns(recapDefault=None, fcastDefault=None):
 
 
 def format_previous(prev):
+    """Creates and returns the text showing the previous 2 days' resuslts.
+
+    prev -- Previous 2 days.
+    """
+    if (prev is None) or (len(prev) == 0):
+        return 'No data available for this location'
+
     prevStr = ''
-
-    if prev is not None and len(prev) == 0:
-        prevStr += 'No data available for this location'
-
     i = 1
     plural = ''
 
@@ -43,10 +46,14 @@ def format_previous(prev):
 
 
 def format_forecasts(fcasts):
+    """Creates and returns the text showing previous forecasts for a location.
+
+    fcasts -- List of days, each day having 5 forecasts
+    """
     fcastStr = ''
 
-    if fcasts in not None and len(fcasts) == 0:
-        prevStr += 'No forecasts available for this location'
+    if (fcasts is None) or (len(fcasts) == 0):
+        return 'No forecasts available for this location'
 
     # TODO: provide a better interface for viewing forecasts; currently only
     # the most recent day's forecasts are available
