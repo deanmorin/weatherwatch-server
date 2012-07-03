@@ -7,6 +7,8 @@ import xmlparsing as xp
 ACCURACY_TEST_LOCATIONS = [ 'Squamish', 'Vancouver', 'Penticton', 'Banff' ]
 
 def next_days(currentDay, numDays):
+    """Returns a list of the next 'numDays' days."""
+
     days = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 
              'Thursday', 'Friday', 'Saturday' ]
     nextDays = []
@@ -24,6 +26,11 @@ def next_days(currentDay, numDays):
 
 
 def forecasts(xml, numDays):
+    """Gets the next few forecasts for a location.
+
+    xml -- The data for the location in question.
+    numDays -- The number of future days to get the forecast for.
+    """
     date = ''
     forecasts = []
     nextDays = None
@@ -78,6 +85,9 @@ def forecasts(xml, numDays):
 
 
 def main():
+    """Used to get the latest data for the database. Can be run as a cron
+       job.
+    """
     usage = 'usage: python %s LIVE|devel' % (sys.argv[0])
     usage += "\n> note: python must be run with the '-O' switch to use the "
     usage += 'live database'

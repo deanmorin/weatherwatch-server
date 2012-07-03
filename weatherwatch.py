@@ -1,5 +1,4 @@
-from flask import Flask, flash, g, make_response, redirect, render_template, \
-     request, url_for
+from flask import Flask, flash, request
 from redis import Redis
 import dbutil
 import present
@@ -22,6 +21,7 @@ def after_request(response):
 
 @app.route('/')
 def index():
+    """Main entry point to the webapp."""
     last = request.cookies.get('last')
 
     if last is not None:
@@ -39,8 +39,10 @@ def index():
     print last
     return response
 
+
 @app.route('/recap/')
 def recap():
+    """Show previous days' values in 'flash' area."""
     location = request.args.get('location')
     if location is not None:
         prev = dbutil.previous_days(location)
@@ -51,8 +53,10 @@ def recap():
     response.set_cookie('last', ('recap,' + location))
     return response
 
+
 @app.route('/previous_forecasts/')
 def previous_forecasts():
+    """Show previous forecasts in 'flash' area."""
     location = request.args.get('fcast_location')
     if location is not None:
         fcast = dbutil.old_forecasts(location)
@@ -62,6 +66,7 @@ def previous_forecasts():
     response = present.provide_dropdowns(fcastDefault=location)
     response.set_cookie('last', 'fcast,' + location)
     return response
+
 
 if __name__ == '__main__':
     if DEBUG:
