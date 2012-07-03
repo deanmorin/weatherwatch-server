@@ -11,6 +11,9 @@ FORECAST_URL = ENVCAN_URL + '/citypage_weather/xml'
 SITE_LIST_URL = FORECAST_URL + '/siteList.xml'
 
 def xml_from_url(url):
+    """Returns a properly encoded bytes stream object to process the xml
+       pointed to by 'url'.
+    """
     r = requests.get(url)
     r.encoding = 'cp1252'
     xml = BytesIO(r.text.encode('cp1252'))
@@ -18,6 +21,16 @@ def xml_from_url(url):
 
 
 def location_url(redis=None, locName=None, urlInfo=None):
+    """Returns the URL for a given location's xml document.
+
+    The URL can be constructed by either passing in both 'redis' and 'locName'
+    or 'urlInfo' by itself.
+
+    redis -- Even though redis is used globally, this is passed in so that a
+            test database can be used for unit tests.
+    locName -- The location in question.
+    urlInfo -- Info needed to make up the URL.
+    """
     if urlInfo is None and redis is not None and locName is not None:
         siteCodes = ast.literal_eval(redis.get('site_codes'))
         urlInfo = siteCodes[locName]
@@ -27,6 +40,11 @@ def location_url(redis=None, locName=None, urlInfo=None):
 
 
 def yesterday_conditions(xml):
+    """Returns the actual recorded values from the previous day, as well as the
+       date that they were retrieved.
+
+    xml -- The document containing the previous day's info.
+    """
     yesterday = {}
     context = etree.iterparse(xml, events=('start',))
 
@@ -63,6 +81,11 @@ def yesterday_conditions(xml):
 
 
 def site_list_urls(xml):
+    """Returns a dictionary with all of the locations as keys, and the info
+       necessary to find their XML files.
+
+    xml -- The Environment Canada site list document.
+    """
     # TODO use 'fast iterparse' www.ibm.com/developerworks/xml/library/x-hiperfparse/
     locations = {}
     context = etree.iterparse(xml, events=('start',))
@@ -83,10 +106,23 @@ def site_list_urls(xml):
 
 
 def db_add_locations(redis, locations):
+    """Adds all of the locations to the database.
+
+    redis -- Even though redis is used globally, this is passed in so that a
+            test database can be used for unit tests.
+    locations -- A dictionary with all of the locations.
+    """
     redis.set('site_codes', locations)
 
 
 def insert_yesterday(redis, location, yesterday):
+    """Inserts the previous day's values for a location into the database.
+
+    redis -- Even though redis is used globally, this is passed in so that a
+            test database can be used for unit tests.
+    location -- The location in question.
+    yesterday -- The previous day's values.
+    """
     newRecord = True
     key = 'loc:' + location + ':prev_days'
     lastRecord = redis.lrange(key, 0, 0)
@@ -102,6 +138,14 @@ def insert_yesterday(redis, location, yesterday):
 
 
 def update_records(redis, localFile=None):
+    """Update the site list info in the database, and get the latest
+       'yesterday values'.
+
+    redis -- Even though redis is used globally, this is passed in so that a
+            test database can be used for unit tests.
+    localFile -- Can be passed in for testing. This way a local file is used
+            to update the site list records.
+    """
     if localFile == None:
         siteListXML = xml_from_url(SITE_LIST_URL)
     else:
@@ -121,6 +165,9 @@ def update_records(redis, localFile=None):
 
 
 def main():
+    """Used to get the latest data for the database. Can be run as a cron
+       job.
+    """
     usage = 'usage: python %s LIVE|devel' % (sys.argv[0])
     usage += "\n> note: python must be run with the '-O' switch to use the "
     usage += 'live database'
