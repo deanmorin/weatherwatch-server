@@ -6,8 +6,8 @@
         <legend>Get 2-day recap for a location</legend>
         <label for="location">Location</label>
         <select name="location">
-        {% for loc in locations %}
-        {% if default == loc %}
+        {% for loc in recapLocations %}
+        {% if recapDefault == loc %}
             <option selected="selected">{{ loc }}</option>
         {% else %}
             <option>{{ loc }}</option>
@@ -24,7 +24,11 @@
         <label for="fcast_location">Location</label>
         <select name="fcast_location">
         {% for loc in fcastLocations %}
+        {% if fcastDefault == loc %}
+            <option selected="selected">{{ loc }}</option>
+        {% else %}
             <option>{{ loc }}</option>
+        {% endif %}
         {% endfor %}
         </select>
         <div class="submit"><input type="submit" value="Submit" /></div>

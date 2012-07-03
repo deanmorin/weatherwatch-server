@@ -3,6 +3,9 @@ from lxml import etree
 import redisinstance as redis
 import xmlparsing as xp
 
+
+ACCURACY_TEST_LOCATIONS = [ 'Squamish', 'Vancouver', 'Penticton', 'Banff' ]
+
 def next_days(currentDay, numDays):
     days = [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 
              'Thursday', 'Friday', 'Saturday' ]
@@ -91,9 +94,7 @@ def main():
         print usage
         exit()
 
-    locations = [ 'Squamish', 'Vancouver', 'Penticton', 'Banff' ]
-
-    for loc in locations:
+    for loc in ACCURACY_TEST_LOCATIONS:
         url = xp.location_url(redis=r, locName=loc)
         xml = xp.xml_from_url(url)
 

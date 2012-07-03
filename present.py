@@ -1,5 +1,15 @@
 import ast
-from flask import Markup
+import dbutil
+from flask import make_response, Markup, render_template
+
+def provide_dropdowns(recapDefault=None, fcastDefault=None):
+    recapLocations = dbutil.all_locations()
+    fcastLocations = dbutil.old_fcast_locs()
+    response = make_response(render_template('index.html',
+            recapLocations=recapLocations, fcastLocations=fcastLocations,
+            recapDefault=recapDefault, fcastDefault=fcastDefault))
+    return response
+
 
 def format_previous(prev):
     prevStr = ''
@@ -24,3 +34,41 @@ def format_previous(prev):
         prevStr += 'Two Days Ago: data not yet available'
 
     return Markup(prevStr)
+
+
+def format_forecasts(fcasts):
+    fcastStr = ''
+    i = 1
+
+    if len(fcasts) == 0:
+        prevStr += 'No forecasts available for this location'
+
+    # TODO: provide a better interface for viewing forecasts; currently only
+    # the most recent day's forecasts are available
+
+    for day in fcasts:
+        dayTuple = ast.literal_eval(day)
+        date = dayTuple[0]
+        fcastStr += '<div>Recorded on %s</div>' % (date)
+
+        fcastGroup = dayTuple[1]
+
+        for f in fcastGroup:
+            if 'high' in f:
+                high = f['high']
+            else:
+                high = '&nbsp-$nbsp'
+
+            if 'low' in f:
+                low = f['low']
+            else:
+                low = '&nbsp-&nbsp'
+
+            # pop is always present
+            pop = f['pop']
+
+            fcastStr += '<div>%d Day Forecast - High: %s Low: %s POP: %s</div>' \
+                     %  (i, high, low, pop)
+            i += 1
+
+    return Markup(fcastStr)

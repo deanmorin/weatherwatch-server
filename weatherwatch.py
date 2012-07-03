@@ -20,10 +20,21 @@ def after_request(response):
 
 @app.route('/')
 def index():
-    prevLoc = request.cookies.get('location')
-    locations = dbutil.all_locations()
-    response = make_response(render_template('index.html',
-            locations=locations, default=None))
+    last = request.cookies.get('last')
+
+    if last is not None:
+        lastAction = last.split(',')
+        print lastAction
+
+        if lastAction[0] == 'recap':
+            response = present.provide_dropdowns(recapDefault=lastAction[1])
+        elif lastAction[0] == 'fcast':
+            response = present.provide_dropdowns(fcastDefault=lastAction[1])
+    else:
+        response = present.provide_dropdowns()
+
+    print response
+    print last
     return response
 
 @app.route('/recap/')
@@ -34,17 +45,21 @@ def recap():
         prevStr = present.format_previous(prev)
         flash(prevStr)
 
-    locations = dbutil.all_locations()
-    response = make_response(render_template('index.html',
-            locations=locations, default=location))
-    response.set_cookie('location', 'here')
+    response = present.provide_dropdowns(recapDefault=location)
+    response.set_cookie('last', ('recap,' + location))
     return response
 
 @app.route('/previous_forecasts/')
 def previous_forecasts():
     location = request.args.get('fcast_location')
-    #flash(locations_in_region(None))
-    return redirect(url_for('index'))
+    if location is not None:
+        fcast = dbutil.old_forecasts(location)
+        fcastStr = present.format_forecasts(fcast)
+        flash(fcastStr)
+
+    response = present.provide_dropdowns(fcastDefault=location)
+    response.set_cookie('last', 'fcast,' + location)
+    return response
 
 if __name__ == '__main__':
     if DEBUG:

@@ -14,8 +14,10 @@ class XMLParsingTestCase(unittest.TestCase):
         requestsLog = logging.getLogger("requests")
         requestsLog.setLevel(logging.WARNING)
 
+
     def tearDown(self):
         pass
+
 
     def test_site_list_urls(self):
         locations = xmlparsing.site_list_urls('testfiles/sitelistpartial.xml')
@@ -25,6 +27,7 @@ class XMLParsingTestCase(unittest.TestCase):
         assert locations['Toronto Island'][0] == 'ON'
         assert locations['Toronto Island'][1] == 's0000785'
         
+
     def test_db_add_locations(self):
         locations = xmlparsing.site_list_urls('testfiles/sitelist.xml')
         f = open('testfiles/sitecodesdict.txt', 'w')
@@ -40,11 +43,13 @@ class XMLParsingTestCase(unittest.TestCase):
         loc = u'Îles-de-la-Madeleine'
         assert codesDict[loc] == ('QC', 's0000174')
 
+
     def test_yesterday_conditions(self):
         url = xmlparsing.FORECAST_URL + '/QC/s0000174_e.xml'
         xml = xmlparsing.xml_from_url(url)
         yesterday = xmlparsing.yesterday_conditions(xml)
         assert yesterday is not None
+
 
     def test_insert_yesterday(self):
         yesterday = { 'high': '32.7', 'precip': '0.0', 'low': '15.4',
@@ -53,6 +58,7 @@ class XMLParsingTestCase(unittest.TestCase):
         xmlparsing.insert_yesterday(redis.test, loc, yesterday)
         key = 'loc:' + loc + ':prev_days'
         print redis.test.lrange(key, 0, 0)
+
 
     def test_update_records(self):
         xmlparsing.update_records(redis.test,
@@ -70,6 +76,7 @@ class XMLParsingTestCase(unittest.TestCase):
 
         siteCodes = ast.literal_eval(redis.test.get('site_codes'))
         assert siteCodes[u'Pointe-à-la-Croix'] == ('QC', 's0000810')
+
 
     def test_location_url(self):
         xmlparsing.location_url(redis.db, locName='Squamish')
