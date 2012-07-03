@@ -38,7 +38,6 @@ def format_previous(prev):
 
 def format_forecasts(fcasts):
     fcastStr = ''
-    i = 1
 
     if len(fcasts) == 0:
         prevStr += 'No forecasts available for this location'
@@ -50,6 +49,7 @@ def format_forecasts(fcasts):
         dayTuple = ast.literal_eval(day)
         date = dayTuple[0]
         fcastStr += '<div>Recorded on %s</div>' % (date)
+        i = 1
 
         fcastGroup = dayTuple[1]
 
@@ -70,5 +70,7 @@ def format_forecasts(fcasts):
             fcastStr += '<div>%d Day Forecast - High: %s Low: %s POP: %s</div>' \
                      %  (i, high, low, pop)
             i += 1
+
+        break
 
     return Markup(fcastStr)

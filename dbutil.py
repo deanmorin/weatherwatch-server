@@ -20,7 +20,9 @@ def previous_days(location):
 
 
 def old_fcast_locs():
-    return ACCURACY_TEST_LOCATIONS
+    fcast = ACCURACY_TEST_LOCATIONS
+    fcast.sort()
+    return fcast
 
 
 def old_forecasts(location):
