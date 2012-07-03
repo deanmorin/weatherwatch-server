@@ -6,7 +6,9 @@ sys.path.insert(0, '../')
 import weatherwatch as ww
 
 class WeatherWatchTestCase(unittest.TestCase):
-
+    """ These tests need more work. Didn't really have time to flesh them
+        out.
+    """
     def setUp(self):
         ww.app.config['TESTING'] = True
         self.app = ww.app.test_client()

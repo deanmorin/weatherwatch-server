@@ -3,6 +3,12 @@ import dbutil
 from flask import make_response, Markup, render_template
 
 def provide_dropdowns(recapDefault=None, fcastDefault=None):
+    """Builds and returns the response that will create the main drop-down
+       view.
+
+    recapDefault -- Recap dropdown item selected by default.
+    fcastDefault -- Forecast dropdown item selected by default.
+    """
     recapLocations = dbutil.all_locations()
     fcastLocations = dbutil.old_fcast_locs()
     response = make_response(render_template('index.html',
